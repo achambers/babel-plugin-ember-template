@@ -1,9 +1,55 @@
 const filePath = require('path');
-const {
-  registerRefs,
-  TEMPLATE_TAG_NAME,
-  buildPrecompileTemplateCall,
-} = require('../lib/util');
+
+const TEMPLATE_TAG_NAME = 'template';
+
+function registerRefs(
+  newPath: string | string[],
+  getRefPaths: (path: string) => NodePath[]
+) {
+  if (Array.isArray(newPath)) {
+    if (newPath.length > 1) {
+      throw new Error(
+        'registerRefs is only meant to handle single node transformations. Received more than one path node.'
+      );
+    }
+
+    newPath = newPath[0];
+  }
+
+  const refPaths = getRefPaths(newPath);
+
+  for (const ref of refPaths) {
+    if (!ref.isIdentifier()) {
+      throw new Error(
+        'ember-template-imports internal assumption that refPath should of type identifier. Please open an issue.'
+      );
+    }
+
+    const binding = ref.scope.getBinding(ref.node.name);
+    if (binding !== undefined) {
+      binding.reference(ref);
+    }
+  }
+}
+
+function buildPrecompileTemplateCall(
+  t: typeof babelTypes,
+  callExpressionPath: NodePath<babelTypes.CallExpression>,
+  state: {
+    importUtil: ImportUtil;
+  }
+): babelTypes.CallExpression {
+  const callee = callExpressionPath.get('callee');
+
+  return t.callExpression(
+    state.importUtil.import(
+      callee,
+      '@ember/template-compilation',
+      'precompileTemplate'
+    ),
+    callExpressionPath.node.arguments
+  );
+}
 
 /**
  * Supports the following syntaxes:

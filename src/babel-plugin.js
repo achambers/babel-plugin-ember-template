@@ -1,6 +1,18 @@
 const { ImportUtil } = require('babel-import-util');
-const util = require('../lib/util');
 const { transformTemplateTag } = require('./template-tag-transform');
+
+const TEMPLATE_TAG_PLACEHOLDER = '__GLIMMER_TEMPLATE';
+
+function isTemplateTag(
+  callExpressionPath
+) {
+  const callee = callExpressionPath.get('callee');
+  return (
+    !Array.isArray(callee) &&
+    callee.isIdentifier() &&
+    callee.node.name === TEMPLATE_TAG_PLACEHOLDER
+  );
+}
 
 /**
  * This Babel plugin takes parseable code emitted by the string-based
@@ -70,7 +82,7 @@ module.exports = function (babel) {
     },
 
     CallExpression(path, state) {
-      if (util.isTemplateTag(path)) {
+      if (isTemplateTag(path)) {
         transformTemplateTag(t, path, state);
       }
     },
