@@ -10,12 +10,10 @@
   "author": "",
   "directories": {},
   "scripts": {
-    "build": "tsc",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel 'lint:!(fix)'",
     "lint:fix": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*:fix",
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
-    "prepack": "npm run build",
     "test": "npm-run-all lint test:*",
     "test:jest": "jest"
   },
@@ -31,13 +29,7 @@
   },
   "devDependencies": {
     "@babel/traverse": "^7.19.6",
-    "@babel/types": "^7.19.4",
     "@glimmer/component": "^1.0.3",
-    "@types/jest": "^27.4.1",
-    "@types/line-column": "^1.0.0",
-    "@types/string.prototype.matchall": "^4.0.1",
-    "@typescript-eslint/eslint-plugin": "^5.5.0",
-    "@typescript-eslint/parser": "^5.5.0",
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
     "eslint": "^7.20.0",
@@ -49,12 +41,8 @@
     "loader.js": "^4.7.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1",
-    "qunit": "^2.14.0",
-    "qunit-dom": "^2.0.0",
     "release-it": "^14.2.1",
     "release-it-lerna-changelog": "^3.1.0",
-    "ts-jest": "^27.1.4",
-    "typescript": "^4.5.2",
     "webpack": "^5.64.4"
   },
   "resolutions": {
