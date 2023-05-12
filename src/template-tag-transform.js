@@ -3,8 +3,8 @@ const filePath = require('path');
 const TEMPLATE_TAG_NAME = 'template';
 
 function registerRefs(
-  newPath: string | string[],
-  getRefPaths: (path: string) => NodePath[]
+  newPath,
+  getRefPaths
 ) {
   if (Array.isArray(newPath)) {
     if (newPath.length > 1) {
@@ -33,12 +33,10 @@ function registerRefs(
 }
 
 function buildPrecompileTemplateCall(
-  t: typeof babelTypes,
-  callExpressionPath: NodePath<babelTypes.CallExpression>,
-  state: {
-    importUtil: ImportUtil;
-  }
-): babelTypes.CallExpression {
+  t,
+  callExpressionPath,
+  state
+) {
   const callee = callExpressionPath.get('callee');
 
   return t.callExpression(
