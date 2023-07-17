@@ -18,7 +18,7 @@
     "test:jest": "jest"
   },
   "dependencies": {
-    "babel-import-util": "^0.2.0"
+    "babel-import-util": "^1.4.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
